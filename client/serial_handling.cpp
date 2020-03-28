@@ -35,7 +35,7 @@ String readline() {
         buf_len++;
         buffer[buf_len] = 0;
       } else {
-        return "nope";
+        return "ooops didn't read properly";
       }
     }
   }
@@ -60,13 +60,15 @@ uint8_t get_waypoints(const lon_lat_32& start, const lon_lat_32& end) {
   Serial.println(end.lon);
   
   String currLine = readline();
-
+  Serial.println(currLine);
+  
   // read input from Serial protocol
   if (currLine[0] == 'N') {
+    Serial.println("Reading in number of waypoints");
     // read in the number of waypoints
     shared.num_waypoints = (currLine.substring(2)).toInt();
     // acknowledge receipt of number of waypoints
-    Serial.println('A');
+    Serial.println("A");
   } else {
     // read was unsuccesful
     return 0;
@@ -84,7 +86,7 @@ uint8_t get_waypoints(const lon_lat_32& start, const lon_lat_32& end) {
       // retrive longitude
       (shared.waypoints[i]).lon = (currLine.substring(firstSpace + 1)).toInt();
       // acknowledge receipt of waypoint
-      Serial.println('A');
+      Serial.println("A");
     } else {
       // read was unsuccessful
       return 0;
